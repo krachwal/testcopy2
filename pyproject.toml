@@ -1,0 +1,28 @@
+[project]
+name="autora-experiment-web-server"
+description = "AutoRA Web Experiment Template Project"
+readme = {file = "README.md", content-type = "text/markdown"}
+version = "2024.07"
+license = {file = "LICENSE"}
+authors = [{name="Varun Narayan", email="varun.narayan@gatech.edu"}, 
+{name="Katarzyna Rachwal", email="krachwal3@gatech.edu"}]
+dependencies = [
+    "fastapi",
+    "uvicorn",
+    "autora",
+    "autora-core"
+]
+
+[build-system]
+requires = ["setuptools", "setuptools_scm"]
+build-backend = "setuptools.build_meta"
+
+[project.urls]
+homepage = "http://www.empiricalresearch.ai"
+"GitHub" = "https://github.com/AutoResearch"
+"PyPI" = "https://pypi.org/project/autora/"
+documentation = "https://autoresearch.github.io/autora/"
+
+[tool.setuptools]
+package-dir = {"" = "server"}
+include-package-data = true

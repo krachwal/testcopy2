@@ -1,0 +1,143 @@
+:root {
+  font-size: 1.5rem;
+  --page-background-color: #fff;
+  --foreground-color: #1a1919;
+  --link-color: #275a90;
+  --line-divider-color: #595959;
+  --heading-color: #000;
+  --primary-button-background: #ffb347;
+  --primary-button-foreground: #fff;
+  --primary-button-hover-foreground: #bfbfbf;
+}
+html,body,button,option {
+  font-family: system-ui,"Helvetica Neue",Helvetica,Arial,sans-serif;
+  font-stretch: normal;
+  font-style: normal;
+  font-weight: normal;
+  line-height: 2rem;
+}
+html,body {
+  width: 100%;
+}
+html {
+  height: 100%;
+}
+body {
+  max-width: 1200px;
+  margin: auto;
+  background: var(--page-background-color);
+  color: var(--foreground-color);
+  padding: 36px
+}
+p,hr {
+  margin-bottom: 16px
+}
+a {
+  color: var(--link-color);
+  text-decoration: none;
+}
+a:hover{
+  text-decoration: underline;
+}
+hr {
+  border-bottom: 1px solid var(--line-divider-color);
+}
+var,em,i {
+  font-style: italic;
+}
+dt,strong,b {
+  font-weight: 600;
+}
+* {
+  border: 0;
+  border-collapse: separate;
+  border-spacing: 0;
+  box-sizing: border-box;
+  margin: 0;
+  max-width: 100%;
+  padding: 0;
+  vertical-align: baseline;
+}
+ol,ul {
+  margin-bottom: 1.2rem;
+  margin-left: 4rem;
+}
+li dl,li ol,li ul {
+  margin-bottom: 0;
+}
+blockquote {
+  margin-bottom: 1rem;
+  margin-left: 4rem;
+}
+h1,h2,h3,h4,h5,h6 {
+  color: var(--heading-color);
+  margin-bottom: 1rem;
+}
+h1 {
+  font-size: 2rem;
+  font-weight: 500;
+  line-height: 3rem;
+  margin-top: 5rem;
+}
+h2 {
+  font-size: 1.8rem;
+  font-weight: 500;
+  line-height: 2rem;
+  margin-top: 2rem;
+  text-decoration: underline;
+}
+h3 {
+  font-size: 1.6rem;
+  line-height: 1.5rem;
+  margin-top: 2rem;
+}
+h4 {
+  font-size: 1.4rem;
+  line-height: 1.5rem;
+  margin-top: 1.5rem;
+}
+h5 {
+  font-size: 1.2rem;
+  font-weight: bold;
+  line-height: 1.5rem;
+  text-transform: uppercase;
+}
+h6 {
+  color: #595959;
+  font-size: 1rem;
+  font-weight: bold;
+  line-height: 1.5rem;
+  text-transform: uppercase;
+}
+
+/* BUTTON CSS */
+button {
+  border-radius: 3.6px;
+  display: inline-block;
+  padding: 0.5rem;
+  cursor: pointer;
+  display: inline;
+  margin-bottom: 1.5rem;
+  margin-right: 0.5rem;
+  padding: 0.5rem 1.5rem;
+  text-align: center;
+}
+button[type="submit"] {
+  background: var(--primary-button-background);
+  color: var(--primary-button-foreground);
+}
+button[type="submit"]:hover {
+  background: var(--primary-button-background);
+  color: var(--primary-button-hover-foreground);
+}
+
+
+.recontact {
+  opacity: 0;
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 0;
+  width: 0;
+  z-index: -1;
+}

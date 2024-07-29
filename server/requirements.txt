@@ -1,0 +1,5 @@
+autora
+autora-core
+requests
+fastapi
+uvicorn
