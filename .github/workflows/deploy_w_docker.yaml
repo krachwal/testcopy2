@@ -33,7 +33,7 @@ jobs:
       env:
         KEY: ${{ secrets.KEY }}
       run: |
-        echo "$SSH_KEY\\n" > ~/.ssh/actions.key
+        echo "$SSH_KEY" > ~/.ssh/actions.key
         chmod 600 ~/.ssh/actions.key
 
     - name: Write SSH config
