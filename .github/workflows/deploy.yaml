@@ -61,7 +61,6 @@ jobs:
     - name: Create target directory
       run: |
         ssh webserver 'mkdir -p /srv'
-        ssh webserver 'sudo chown web:web /srv'
 
     - name: Copy zip file to server
       env:
