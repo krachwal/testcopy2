@@ -62,7 +62,7 @@ jobs:
       run: |
         ssh webserver 'mkdir -p /srv'
 
-    - name: Copy zip file to server
+    - name: Copy files to server
       env:
         HOST: ${{ secrets.HOST }}
         USERNAME: ${{ secrets.USERNAME }}
@@ -70,13 +70,10 @@ jobs:
         scp -r server webserver:/home/$USERNAME/server
         scp start_server.sh webserver:/home/$USERNAME/server
 
-    - name: Ensure unzip available
-      run: | 
-        ssh webserver 'sudo apt-get install -y unzip'
-
-    - name: Unpack zip to target directory on server
+    - name: Test directory structure
       run: |
-        ssh webserver 'unzip -o app.zip -d /srv'
+        ssh webserver 'ls /srv'
+        ssh webserver 'ls /srv/server'
 
     - name: Install Python dependencies
       run: |
