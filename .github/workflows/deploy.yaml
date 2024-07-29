@@ -60,8 +60,6 @@ jobs:
 
     - name: Create target directory
       run: |
-        ssh webserver 'sudo groupadd autora'
-        ssh webserver 'sudo useradd -g autora -G wheel autora'
         ssh webserver 'mkdir -p /srv'
         ssh webserver 'sudo chown web:web /srv'
 
