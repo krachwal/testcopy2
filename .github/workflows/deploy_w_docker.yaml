@@ -23,7 +23,6 @@ jobs:
     - name: Save Docker image as tarball
       run: |
         docker save autora-web-server:latest | gzip > image.tar.gz
-        ls -al image.tar*
 
     - name: Prepare SSH dir
       run: |
@@ -33,7 +32,7 @@ jobs:
       env:
         KEY: ${{ secrets.KEY }}
       run: |
-        echo "$SSH_KEY" > ~/.ssh/actions.key
+        echo "$SSH_KEY\n" > ~/.ssh/actions.key
         chmod 600 ~/.ssh/actions.key
 
     - name: Write SSH config

@@ -1,0 +1,93 @@
+name: Build and Deploy to Cloud Metal
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build_and_deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Install NodeJS
+      uses: actions/setup-node@v4
+
+    - name: Install Javascript dependencies and build
+      run: |
+        cd experiment
+        npm ci
+
+    - name: Build Javascript UI
+      run: |
+        cd experiment
+        npm run build
+
+    - name: Copy Minified Javascript to web server directory
+      run: |
+        cd experiment
+        cd ..
+        cp -rf experiment/dist server/dist
+        ls server
+        ls server/dist
+
+    - name: Prepare SSH dir
+      run: |
+        mkdir -pv ~/.ssh/
+
+    - name: Write SSH key
+      env:
+        KEY: ${{ secrets.KEY }}
+      run: |
+        echo "$KEY" > ~/.ssh/actions.key
+        chmod 600 ~/.ssh/actions.key
+
+    - name: Write SSH config
+      env:
+        HOST: ${{ secrets.HOST }}
+        USERNAME: ${{ secrets.USERNAME }}
+      run: |
+        cat >>~/.ssh/config <<END
+        Host webserver
+            HostName $HOST
+            User $USERNAME
+            IdentityFile ~/.ssh/actions.key
+            StrictHostKeyChecking=no
+            ServerAliveCountMax=10
+            ServerAliveInterval=60
+        END
+
+    - name: Create target directory
+      run: |
+        ssh webserver 'sudo groupadd autora'
+        ssh webserver 'sudo useradd -g autora -G wheel autora'
+        ssh webserver 'mkdir -p /srv'
+        ssh webserver 'sudo chown web:web /srv'
+
+    - name: Copy zip file to server
+      env:
+        HOST: ${{ secrets.HOST }}
+        USERNAME: ${{ secrets.USERNAME }}
+      run: |
+        scp server webserver:/home/$USERNAME/server
+        scp start_server.sh webserver:/home/$USERNAME/server
+
+    - name: Ensure unzip available
+      run: | 
+        ssh webserver 'sudo apt-get install -y unzip'
+
+    - name: Unpack zip to target directory on server
+      run: |
+        ssh webserver 'unzip -o app.zip -d /srv'
+
+    - name: Install Python dependencies
+      run: |
+        ssh webserver 'sudo apt-get -y install python3 python3-pip python3-venv'
+        ssh webserver 'cd /srv/server && python3 -m venv venv'
+        ssh webserver 'cd /srv/server && source venv/bin/activate'
+        ssh webserver 'cd /srv/server && ./venv/bin/python -m pip install -r /srv/server/requirements.txt'
+
+    - name: Start FastAPI web server
+      run: |
+        ssh webserver 'chmod +x /srv/server/start_server.sh && cd /srv/server && ./start_server.sh'
