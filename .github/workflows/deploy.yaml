@@ -67,7 +67,7 @@ jobs:
         HOST: ${{ secrets.HOST }}
         USERNAME: ${{ secrets.USERNAME }}
       run: |
-        scp server webserver:/home/$USERNAME/server
+        scp -r server webserver:/home/$USERNAME/server
         scp start_server.sh webserver:/home/$USERNAME/server
 
     - name: Ensure unzip available
