@@ -60,27 +60,27 @@ jobs:
 
     - name: Create target directory
       run: |
-        ssh webserver 'mkdir -p /srv'
+        ssh webserver 'mkdir -p ~/jspsych_experiment'
 
     - name: Copy files to server
       env:
         HOST: ${{ secrets.HOST }}
         USERNAME: ${{ secrets.USERNAME }}
       run: |
-        scp -r server webserver:/srv
-        scp start_server.sh webserver:/srv/server
+        scp -r server webserver:~/jspsych_experiment
+        scp start_server.sh webserver:~/jspsych_experiment/server
 
     - name: Test directory structure
       run: |
-        ssh webserver 'ls /srv/server'
+        ssh webserver 'ls ~/jspsych_experiment/server'
 
     - name: Install Python dependencies
       run: |
         ssh webserver 'sudo apt-get -y install python3 python3-pip python3-venv'
-        ssh webserver 'cd /srv/server && python3 -m venv venv'
-        ssh webserver 'cd /srv/server && source venv/bin/activate'
-        ssh webserver 'cd /srv/server && ./venv/bin/python -m pip install -r /srv/server/requirements.txt'
+        ssh webserver 'cd ~/jspsych_experiment/server && python3 -m venv venv'
+        ssh webserver 'cd ~/jspsych_experiment/server && source venv/bin/activate'
+        ssh webserver 'cd ~/jspsych_experiment/server && ./venv/bin/python -m pip install -r ~/jspsych_experiment/server/requirements.txt'
 
     - name: Start FastAPI web server
       run: |
-        ssh webserver 'chmod +x /srv/server/start_server.sh && cd /srv/server && ./start_server.sh'
+        ssh webserver 'chmod +x ~/jspsych_experiment/server/start_server.sh && cd ~/jspsych_experiment/server && ./start_server.sh'
