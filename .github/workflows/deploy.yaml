@@ -67,12 +67,11 @@ jobs:
         HOST: ${{ secrets.HOST }}
         USERNAME: ${{ secrets.USERNAME }}
       run: |
-        scp -r server webserver:/home/$USERNAME/server
-        scp start_server.sh webserver:/home/$USERNAME/server
+        scp -r server webserver:/srv
+        scp start_server.sh webserver:/srv/server
 
     - name: Test directory structure
       run: |
-        ssh webserver 'ls /srv'
         ssh webserver 'ls /srv/server'
 
     - name: Install Python dependencies
