@@ -63,8 +63,7 @@ jobs:
     - name: Ensure Docker is installed and running
       run: |
         ssh webserver 'sudo snap install docker'
-        ssh webserver 'sudo systemctl start docker'   
-       
+
     - name: Stop running container
       run: | 
         ssh webserver 'sudo docker ps -q | xargs --no-run-if-empty docker stop | xargs --no-run-if-empty docker rm'
