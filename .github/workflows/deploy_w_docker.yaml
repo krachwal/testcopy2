@@ -54,7 +54,7 @@ jobs:
       env:
         EC2_USERNAME: ${{ secrets.USERNAME }}
       run: |
-        scp image.tar.gz webserver:/home/$USERNAME
+        scp image.tar.gz webserver:~
 
     - name: Ensure Docker is installed and running
       run: |
@@ -69,13 +69,13 @@ jobs:
       env:
         EC2_USERNAME: ${{ secrets.USERNAME }}
       run: |
-        ssh webserver "sudo docker load -i /home/$USERNAME/image.tar.gz"
+        ssh webserver "sudo docker load -i ~/image.tar.gz"
 
     - name: Delete gzipped image tarball
       env:
         EC2_USERNAME: ${{ secrets.USERNAME }}
       run: |
-        ssh webserver "rm -f /home/$USERNAME/image.tar.gz"
+        ssh webserver "rm -f ~/image.tar.gz"
 
     - name: Run Docker container on EC2 instance
       run: |
