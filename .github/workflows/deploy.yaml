@@ -80,4 +80,4 @@ jobs:
     - name: Start FastAPI web server
       run: |
         ssh webserver 'chmod +x ~/jspsych_experiment/server/start_metal_server.sh'
-        ssh webserver 'cd ~/jspsych_experiment/server && ./start_metal_server.sh'
+        ssh webserver 'cd ~/jspsych_experiment/server && sudo ./start_metal_server.sh'
