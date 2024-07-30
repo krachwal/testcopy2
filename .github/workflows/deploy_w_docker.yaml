@@ -54,7 +54,7 @@ jobs:
       env:
         EC2_USERNAME: ${{ secrets.USERNAME }}
       run: |
-        scp image.tar.gz ec2:/home/$USERNAME
+        scp image.tar.gz webserver:/home/$USERNAME
 
     - name: Ensure Docker is installed and running
       run: |
