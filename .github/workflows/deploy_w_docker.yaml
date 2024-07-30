@@ -28,11 +28,11 @@ jobs:
       run: |
         mkdir -pv ~/.ssh/
 
-    - name: Write key
+    - name: Write SSH key
       env:
         KEY: ${{ secrets.KEY }}
       run: |
-        echo "$SSH_KEY\n" > ~/.ssh/actions.key
+        echo "$KEY" > ~/.ssh/actions.key
         chmod 600 ~/.ssh/actions.key
 
     - name: Write SSH config
@@ -41,7 +41,7 @@ jobs:
         USERNAME: ${{ secrets.USERNAME }}
       run: |
         cat >>~/.ssh/config <<END
-        Host ec2
+        Host webserver
             HostName $HOST
             User $USERNAME
             IdentityFile ~/.ssh/actions.key
