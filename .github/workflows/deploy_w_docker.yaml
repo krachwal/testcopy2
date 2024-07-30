@@ -62,7 +62,7 @@ jobs:
 
     - name: Ensure Docker is installed and running
       run: |
-        ssh webserver 'sudo apt install docker'
+        ssh webserver 'sudo yum install docker'
         ssh webserver 'sudo systemctl start docker'   
        
     - name: Stop running container
