@@ -1,0 +1,81 @@
+name: Build and Deploy to Cloud Metal
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build_and_deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Install NodeJS
+      uses: actions/setup-node@v4
+
+    - name: Install Javascript dependencies and build
+      run: |
+        cd experiment-ui
+        npm ci
+
+    - name: Build Javascript UI
+      run: |
+        cd experiment-ui
+        npm run build
+
+    - name: Copy Minified Javascript to web server directory
+      run: |
+        cd experiment-ui
+        cd ..
+        cp -rf experiment-ui/dist experiment-server/dist
+
+    - name: Prepare SSH dir
+      run: |
+        mkdir -pv ~/.ssh/
+
+    - name: Write SSH key
+      env:
+        KEY: ${{ secrets.KEY }}
+      run: |
+        echo "$KEY" > ~/.ssh/actions.key
+        chmod 600 ~/.ssh/actions.key
+
+    - name: Write SSH config
+      env:
+        HOST: ${{ secrets.HOST }}
+        USERNAME: ${{ secrets.USERNAME }}
+      run: |
+        cat >>~/.ssh/config <<END
+        Host webserver
+            HostName $HOST
+            User $USERNAME
+            IdentityFile ~/.ssh/actions.key
+            StrictHostKeyChecking=no
+            ServerAliveCountMax=10
+            ServerAliveInterval=60
+        END
+
+    - name: Create target directory
+      run: |
+        ssh webserver 'mkdir -p ~/jspsych_experiment'
+
+    - name: Copy files to server
+      env:
+        HOST: ${{ secrets.HOST }}
+        USERNAME: ${{ secrets.USERNAME }}
+      run: |
+        scp -r experiment-server webserver:~/jspsych_experiment
+        scp _start_metal_server.sh webserver:~/jspsych_experiment/experiment-server
+
+    - name: Install Python dependencies
+      run: |
+        ssh webserver 'sudo apt-get -y install python3 python3-pip python3-venv'
+        ssh webserver 'cd ~/jspsych_experiment/experiment-server && python3 -m venv venv'
+        ssh webserver 'cd ~/jspsych_experiment/experiment-server && source venv/bin/activate'
+        ssh webserver 'cd ~/jspsych_experiment/experiment-server && ./venv/bin/python -m pip install -r ~/jspsych_experiment/experiment-server/requirements.txt'
+
+    - name: Start FastAPI web server
+      run: |
+        ssh webserver 'chmod +x ~/jspsych_experiment/experiment-server/_start_metal_server.sh'
+        ssh webserver 'cd ~/jspsych_experiment/experiment-server && sudo ./_start_metal_server.sh'
