@@ -1,5 +1,5 @@
 autora-core
 autora-synthetic
 autora[theorist-bms]
-autora[experimentalist-model-disagreement]
+autora[theorist-bsr]
 autora[experimentalist-uncertainty]

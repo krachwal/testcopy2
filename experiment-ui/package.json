@@ -16,8 +16,8 @@
     "vite-plugin-eslint": "^1.8.1"
   },
   "dependencies": {
-    "@jspsych/plugin-serial-reaction-time": "*",
     
+    "@jspsych/plugin-html-button-response": "*",
     
     
     

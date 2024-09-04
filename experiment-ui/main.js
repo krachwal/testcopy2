@@ -1,5 +1,5 @@
 // To use the jsPsych package first install jspsych using `npm install jspsych`
-// This example uses the serial-reaction-time plugin. Install it via `npm install @jspsych/plugin-serial-reaction-time`
+// This example uses the html-button-response plugin. Install it via `npm install @jspsych/plugin-html-button-response`
 
 // Here is documentation on how to program a jspsych experiment using npm:
 // https://www.jspsych.org/7.3/tutorials/hello-world/#option-3-using-npm
@@ -8,7 +8,7 @@ import {initJsPsych} from 'jspsych';
 import 'jspsych/css/jspsych.css'
 import axios from "axios";
 import {endPage} from "./pages";
-import jsPsychSerialReactionTime from '@jspsych/plugin-serial-reaction-time'
+import jsPsychHtmlButtonResponse from '@jspsych/plugin-html-button-response'
 
 const main = async (id, condition) => {
 	  var jsPsych = initJsPsych({
@@ -26,41 +26,59 @@ const main = async (id, condition) => {
 		}
 	});
 
-	var locations = [
-		[0,0],
-		[0,1],
-		[0,2],
-		[0,3]
-	];
+	var timeline = [];
 
-	locations = jsPsych.randomization.shuffle(locations);
+	timeline.push({
+		type: jsPsychHtmlButtonResponse,
+		stimulus: '<p style="color: red; font-size: 48px; font-weight: bold;">GREEN</p>',
+		choices: ['Green', 'Blue', 'Red'],
+		button_layout: "flex",
+		prompt: "<p>What color is this word? (flex layout)</p>"
+	});
 
-	var timeline = {
-		timeline: [
-			{
-				type: jsPsychSerialReactionTime,
-				target: jsPsych.timelineVariable('target1'),
-				grid_square_size: 80,
-				prompt: "<p>Press the key that corresponds to the dark box (use 3, 5, 7, 9)</p>",
-				//show_response_feedback: true
-			},
-			{
-				type: jsPsychSerialReactionTime,
-				target: jsPsych.timelineVariable('target2'),
-				grid_square_size: 80,
-				prompt: "<p>Press the key that corresponds to the dark box (use 3, 5, 7, 9)</p>",
-				//show_response_feedback: true
-			}
-		],
-		timeline_variables: [
-			{target1: locations[0], target2: locations[1]},
-			{target1: locations[2], target2: locations[3]}
-		],
-		randomize_order: true,
-		repetitions: 10
-	};
+	timeline.push({
+		type: jsPsychHtmlButtonResponse,
+		stimulus: '<p style="color: red; font-size: 48px; font-weight: bold;">GREEN</p>',
+		choices: ['Green', 'Blue', 'Red'],
+		button_layout: "grid",
+		prompt: "<p>What color is this word? (grid layout)</p>"
+	});
 
-	await jsPsych.run([timeline]);
+	timeline.push({
+		type: jsPsychHtmlButtonResponse,
+		stimulus: '<p style="color: red; font-size: 48px; font-weight: bold;">GREEN</p>',
+		choices: ['Green', 'Blue', 'Red'],
+		button_layout: "grid",
+		grid_rows: 2,
+		prompt: "<p>What color is this word? (grid layout, two rows)</p>"
+	});
+
+	timeline.push({
+		type: jsPsychHtmlButtonResponse,
+		stimulus: '<p style="color: green; font-size: 48px; font-weight: bold;">GREEN</p>',
+		choices: ['Green', 'Blue', 'Red'],
+		stimulus_duration: 1000,
+		prompt: "<p>What color is this word? (word disappears after 1s)</p>"
+	});
+
+	timeline.push({
+		type: jsPsychHtmlButtonResponse,
+		stimulus: '<p style="color: blue; font-size: 48px; font-weight: bold;">RED</p>',
+		choices: ['Green', 'Blue', 'Red'],
+		trial_duration: 2000,
+		response_ends_trial: false,
+		prompt: "<p>What color is this word? (trial ends after 2s)</p>"
+	});
+
+	timeline.push({
+		type: jsPsychHtmlButtonResponse,
+		stimulus: '<p style="color: red; font-size: 48px; font-weight: bold;">GREEN</p>',
+		choices: ['Green', 'Blue', 'Red'],
+		enable_button_after: 2000,
+		prompt: "<p>What color is this word? (button enable after 2s)</p>"
+	});
+
+	await jsPsych.run(timeline);
 } 
 
 export default main
