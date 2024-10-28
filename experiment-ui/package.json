@@ -1,0 +1,33 @@
+{
+  "name": "experiment",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "preview": "vite preview",
+    "build": "eslint --fix ./**/*.js && vite build",
+    "lint": "eslint --fix --ext .js,.jsx ."
+  },
+  "devDependencies": {
+    "@stylistic/eslint-plugin-js": "^1.6.1",
+    "eslint": "^8.54.0",
+    "vite": "^5.2.13",
+    "vite-plugin-eslint": "^1.8.1"
+  },
+  "dependencies": {
+    
+    "@jspsych/plugin-html-button-response": "*",
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    "axios": "^1.7.4",
+    "jspsych": "^7.3.4"
+  }
+}

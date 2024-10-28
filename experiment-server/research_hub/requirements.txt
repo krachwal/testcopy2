@@ -1,0 +1,5 @@
+autora-core
+autora-synthetic
+autora[theorist-bms]
+autora[experimentalist-novelty]
+autora[experimentalist-nearest-value]

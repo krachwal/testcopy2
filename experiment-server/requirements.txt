@@ -1,0 +1,5 @@
+autora
+autora-core
+itsdangerous
+fastapi
+uvicorn
